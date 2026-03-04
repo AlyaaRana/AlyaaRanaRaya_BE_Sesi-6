@@ -6,16 +6,19 @@ use App\Http\Controllers\Controller;
 
 class PatientController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $patients = Patient::with(['patientDetail', 'medicalRecords'])->get();
         return view('patients.index', compact('patients'));
     }
 
-    public function create() {
+    public function create()
+    {
         return view('patients.create');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $patient = Patient::create([
             'name' => $request->name
         ]);
@@ -29,7 +32,12 @@ class PatientController extends Controller
         return redirect('/')->with('success', 'Pasien berhasil ditambahkan');
     }
 
-    public function storeRecord(Request $request, $id) {
+    public function edit(Patient $patient)
+    {
+        return view('patients.edit', compact('patient'));
+    }
+    public function storeRecord(Request $request, $id)
+    {
         $patient = Patient::findOrFail($id);
 
         $patient->medicalRecords()->create([
